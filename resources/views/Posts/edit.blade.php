@@ -1,37 +1,36 @@
 @extends('layouts.app')
 
-@section('title') create @endsection
+@section('title')
+    Edit Post Page
+@endsection
+
 
 @section('content')
-    <form class="create-post" method="POST" action="{{ route('posts.store') }}" enctype="multipart/form-data">
+    <form class="create-post" method="POST" action="{{route('posts.update', $post->id)}}" enctype="multipart/form-data">
         @csrf
-        <input type="text" name="title" placeholder="Post title"
-            value="@if ($errors->any()) {{ old('title') }} @endif" />
+        @method('PUT')
+        <input type="text" name="title" placeholder="Post title" value="{{$post->title}}">
+        {{-- if error in title validation --}}
         @error('title')
             <div class="errornotification">
                 {{ $message }}
             </div>
         @enderror
+        <textarea name="description" placeholder="Write Your Post Here!">{{ $post->description }}</textarea>
 
-        <textarea name="description" placeholder="What's on your mind?">
-@if ($errors->any())
-{{ old('description') }}
-@endif
-</textarea>
+        {{-- if error in description validation --}}
         @error('description')
             <div class="errornotification">
                 {{ $message }}
             </div>
         @enderror
-
-
         <input class="form-control" type="file" id="formFile" name="post_image" accept="image/png, image/jpeg">
         @error('post_image')
             <div class="errornotification">
-                {{ $message }}
+                {{$message}}
             </div>
         @enderror
 
-        <button type="submit">Create Post</button>
+        <button type="submit"> Update Post </button>
     </form>
 @endsection
